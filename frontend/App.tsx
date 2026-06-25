@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Colors } from './src/constants/colors';
-import { Screen } from './src/types';
 import BottomNav from './src/components/BottomNav';
+import { Colors } from './src/constants/colors';
 import ExpenseScreen from './src/screens/ExpenseScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
-import StatsScreen from './src/screens/StatsScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import StatsScreen from './src/screens/StatsScreen';
+import { Screen } from './src/types';
 
 function renderScreen(screen: Screen) {
   switch (screen) {
@@ -19,7 +20,19 @@ function renderScreen(screen: Screen) {
 }
 
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [activeScreen, setActiveScreen] = useState<Screen>('expense');
+
+  if (!loggedIn) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.safe}>
+          <StatusBar barStyle="light-content" backgroundColor="#07173f" />
+          <LoginScreen onStart={() => setLoggedIn(true)} />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
 
   return (
     <SafeAreaProvider>
